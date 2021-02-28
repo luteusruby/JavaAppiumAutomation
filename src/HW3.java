@@ -47,12 +47,66 @@ public class HW3 {
         );
     }
 
+    @Test
+    public void testCancelSearch()
+    {
+        waitForElementAndClick(
+                By.id("org.wikipedia:id/search_container"),
+                "Cannot find Search Wikipedia input",
+                5
+        );
+
+        waitForElementAndSendKeys(
+                By.xpath("//*[contains(@text, 'Search…')]"),
+                "Java",
+                "Cannot find search input",
+                5
+        );
+
+        waitForElementPresent(
+                By.xpath("//*[contains(@text, 'Object-oriented programming language')]"),
+                "Cannot find search result",
+                15
+        );
+
+        waitForElementPresent(
+                By.xpath("//*[contains(@text, 'My java')]"),
+                "Cannot find search result",
+                15
+        );
+
+        waitForElementPresent(
+                By.xpath("//*[contains(@text, 'Island of Indonesia')]"),
+                "Cannot find search result",
+                15
+        );
+
+        waitForElementAndClick(
+                By.id("org.wikipedia:id/search_close_btn"),
+                "Cannot find X to cancel search",
+                5
+        );
+
+        waitForElementPresent(
+                By.id("org.wikipedia:id/fragment_main_container"),
+                "Cannot find toolbar",
+                5
+        );
+
+        waitForElementPresent(
+                By.xpath("//*[contains(@text, 'Wikipedia')]"),
+                "Main page is not presented",
+                15
+        );
+
+    }
+
     public void assertElementHasText(By by, String expected_title, String error_message)
     {
         WebElement title_element = waitForElementPresent(
                 by,
                 "Cannot find article title",
-                15
+                25
         );
 
         String article_title = title_element.getAttribute("text");
@@ -71,6 +125,20 @@ public class HW3 {
         return wait.until(
                 ExpectedConditions.presenceOfElementLocated(by)
         );
+    }
+
+    private WebElement waitForElementAndClick(By by, String error_message, long timeoutInSeconds)
+    {
+        WebElement element = waitForElementPresent(by, error_message, timeoutInSeconds);
+        element.click();
+        return element;
+    }
+
+    private  WebElement waitForElementAndSendKeys(By by, String value, String error_message, long timeoutInSeconds)
+    {
+        WebElement element = waitForElementPresent(by, error_message, timeoutInSeconds);
+        element.sendKeys(value);
+        return element;
     }
 
 }
