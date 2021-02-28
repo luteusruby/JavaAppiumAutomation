@@ -101,6 +101,36 @@ public class HW3 {
 
     }
 
+    @Test
+    public void testSearchResult()
+    {
+        waitForElementAndClick(
+                By.id("org.wikipedia:id/search_container"),
+                "Cannot find Search Wikipedia input",
+                5
+        );
+
+        waitForElementAndSendKeys(
+                By.xpath("//*[contains(@text, 'Search…')]"),
+                "Java",
+                "Cannot find search input",
+                5
+        );
+
+/*        waitForElementPresent(
+                By.xpath("//*[@resource-id='org.wikipedia:id/page_list_item_container']//*[@resource-id='org.wikipedia:id/page_list_item_title']"),
+                "Cannot find 'Object-oriented programming language' topic searching by Java",
+                15
+        );*/
+
+        assertElementHasText(
+                By.xpath("//*[@resource-id='org.wikipedia:id/page_list_item_container']//*[@resource-id='org.wikipedia:id/page_list_item_title']"),
+                "Java",
+                "No Java text in result"
+        );
+
+    }
+
     public void assertElementHasText(By by, String expected_title, String error_message)
     {
         WebElement title_element = waitForElementPresent(
