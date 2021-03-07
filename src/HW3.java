@@ -124,7 +124,7 @@ public class HW3 {
         );*/
 
         assertElementHasText(
-                By.xpath("//*[@resource-id='org.wikipedia:id/page_list_item_container']//*[@resource-id='org.wikipedia:id/page_list_item_title']"),
+                By.xpath("[@resource-id='org.wikipedia:id/page_list_item_title'][@instance='2']"),
                 "Java",
                 "No Java text in result"
         );
