@@ -587,6 +587,38 @@ public class FirstTest {
 
     }
 
+    @Test
+    public void testAssertTitle()
+    {
+        waitForElementAndClick(
+                By.id("org.wikipedia:id/search_container"),
+                "Cannot find Search Wikipedia input",
+                5
+        );
+
+        String search_line = "Java";
+
+        waitForElementAndSendKeys(
+                By.xpath("//*[contains(@text, 'Search…')]"),
+                search_line,
+                "Cannot find search input",
+                5
+        );
+
+        waitForElementAndClick(
+                By.xpath("//*[@resource-id='org.wikipedia:id/page_list_item_container']//*[@text='Object-oriented programming language']"),
+                "Cannot find 'Object-oriented programming language' topic searching by " + search_line,
+                15
+        );
+
+        String search_result_locator = "//*[@resource-id='org.wikipedia:id/view_page_header_container']//*[@resource-id='org.wikipedia:id/view_page_title_text']";
+        
+        assertElementPresent(
+                By.xpath(search_result_locator),
+                " Title displayed incorrect " + search_line
+                );
+    }
+
 
     private WebElement waitForElementPresent(By by, String error_message, long timeoutInSeconds)
     {
@@ -707,6 +739,15 @@ public class FirstTest {
     {
         WebElement element = waitForElementPresent(by, error_message, timeiInSeconds);
         return element.getAttribute(attribute);
+    }
+
+    private void assertElementPresent(By by, String error_message)
+    {
+        int amount_of_elements = getAmountOfElements(by);
+        if (amount_of_elements == 0) {
+            String default_message = "An element '" + by.toString() + "' presented incorrect";
+            throw new AssertionError(default_message + "" + error_message);
+    }
     }
 
 }
