@@ -626,6 +626,100 @@ public class FirstTest {
                 );
     }
 
+    @Test
+    public void compareTextInField()
+    {
+        assertElementHasText(
+                By.xpath("//*[contains(@text, 'Search Wikipedia')]"),
+                "Search Wikipedia",
+                "Cannot find text"
+        );
+    }
+
+    @Test
+    public void testCancelSearch1()
+    {
+        waitForElementAndClick(
+                By.id("org.wikipedia:id/search_container"),
+                "Cannot find Search Wikipedia input",
+                5
+        );
+
+        waitForElementAndSendKeys(
+                By.xpath("//*[contains(@text, 'Search…')]"),
+                "Java",
+                "Cannot find search input",
+                5
+        );
+
+        waitForElementPresent(
+                By.xpath("//*[contains(@text, 'Object-oriented programming language')]"),
+                "Cannot find search result",
+                15
+        );
+
+        waitForElementPresent(
+                By.xpath("//*[contains(@text, 'My java')]"),
+                "Cannot find search result",
+                15
+        );
+
+        waitForElementPresent(
+                By.xpath("//*[contains(@text, 'Island of Indonesia')]"),
+                "Cannot find search result",
+                15
+        );
+
+        waitForElementAndClick(
+                By.id("org.wikipedia:id/search_close_btn"),
+                "Cannot find X to cancel search",
+                5
+        );
+
+        waitForElementPresent(
+                By.id("org.wikipedia:id/fragment_main_container"),
+                "Cannot find toolbar",
+                5
+        );
+
+        waitForElementPresent(
+                By.xpath("//*[contains(@text, 'Wikipedia')]"),
+                "Main page is not presented",
+                15
+        );
+
+    }
+
+    @Test
+    public void testSearchResult()
+    {
+        waitForElementAndClick(
+                By.id("org.wikipedia:id/search_container"),
+                "Cannot find Search Wikipedia input",
+                5
+        );
+
+        waitForElementAndSendKeys(
+                By.xpath("//*[contains(@text, 'Search…')]"),
+                "Java",
+                "Cannot find search input",
+                5
+        );
+
+/*        waitForElementPresent(
+                By.xpath("//*[@resource-id='org.wikipedia:id/page_list_item_container']//*[@resource-id='org.wikipedia:id/page_list_item_title']"),
+                "Cannot find 'Object-oriented programming language' topic searching by Java",
+                15
+        );*/
+
+        assertElementHasText(
+                By.xpath("[@resource-id='org.wikipedia:id/page_list_item_title'][@instance='2']"),
+                "Java",
+                "No Java text in result"
+        );
+
+    }
+
 
     private WebElement waitForElementPresent(By by, String error_message, long timeoutInSeconds)
     {
@@ -756,5 +850,23 @@ public class FirstTest {
             throw new AssertionError(default_message + "" + error_message);
     }
     }
+
+    public void assertElementHasText(By by, String expected_title, String error_message)
+    {
+        WebElement title_element = waitForElementPresent(
+                by,
+                "Cannot find article title",
+                25
+        );
+
+        String article_title = title_element.getAttribute("text");
+
+        Assert.assertEquals(
+                error_message,
+                expected_title,
+                article_title
+        );
+    }
+
 
 }
