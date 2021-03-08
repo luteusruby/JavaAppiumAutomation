@@ -612,7 +612,13 @@ public class FirstTest {
         );
 
         String search_result_locator = "//*[@resource-id='org.wikipedia:id/view_page_header_container']//*[@resource-id='org.wikipedia:id/view_page_title_text']";
-        
+
+        waitForElementPresent(
+                By.xpath(search_result_locator),
+                "Title are not presented on the page",
+                15
+                );
+
         assertElementPresent(
                 By.xpath(search_result_locator),
                 " Title displayed incorrect " + search_line
@@ -744,7 +750,7 @@ public class FirstTest {
     private void assertElementPresent(By by, String error_message)
     {
         int amount_of_elements = getAmountOfElements(by);
-        if (amount_of_elements == 0) {
+        if (amount_of_elements != 1) {
             String default_message = "An element '" + by.toString() + "' presented incorrect";
             throw new AssertionError(default_message + "" + error_message);
     }
