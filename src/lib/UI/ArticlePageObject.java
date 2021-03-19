@@ -16,9 +16,6 @@ public class ArticlePageObject extends MainPageObject{
         MY_LIST_OK_BUTTON = "//*[@text='OK']",
         CLOSE_ARTICLE_BUTTON = "//android.widget.ImageButton[@content-desc='Navigate up']";
 
-
-
-
     public ArticlePageObject(AppiumDriver driver)
     {
         super(driver);
@@ -84,12 +81,38 @@ public class ArticlePageObject extends MainPageObject{
         );
     }
 
+    public void addNotFirstArticleToMyList(String name_of_folder)
+    {
+        this.waitForElementAndClick(
+                By.xpath(OPTION_BUTTON),
+                "Cannot find button to open article options",
+                5
+        );
+
+        this.waitForElementAndClick(
+                By.xpath(OPTION_ADD_TO_MY_LIST_BUTTON),
+                "Cannot find option to add article to reading list",
+                5
+        );
+
+        MyListsPageObject MyListsPageObject = new MyListsPageObject(driver);
+        MyListsPageObject.openFolderByNames(name_of_folder);
+    }
+
     public void closeArticle()
     {
         this.waitForElementAndClick(
                 By.xpath(CLOSE_ARTICLE_BUTTON),
                 "Cannot close article, cannot find X link",
                 5
+        );
+    }
+
+    public void assertTitlePresentedOnPage()
+    {
+        this.assertElementPresent(
+                By.id(TITLE),
+                " Title is not displayed on the page "
         );
     }
 }
