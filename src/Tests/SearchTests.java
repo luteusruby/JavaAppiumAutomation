@@ -71,4 +71,6 @@ public class SearchTests extends CoreTestCase
         SearchPageObject.waitForCancelButtonToDisappear();
 
     }
+
+
 }
